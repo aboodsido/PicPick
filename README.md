@@ -1,4 +1,4 @@
-# PicpPick 🎮 
+# PicPick 🎮 
 
 PicPick game is a new Flutter project, that let the users to swipe a list of images to left(dislike) or right(like) and then after 10 swipes it goes to result screen that shows to him the number of likes and dislikes.
 
