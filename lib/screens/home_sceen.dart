@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/image_provider.dart';
-import '../widgets/image_card.dart'; // Reusable widget for image display
+import '../widgets/image_card.dart';
+import 'result_screen.dart'; // Reusable widget for image display
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,16 +53,24 @@ class _HomeScreenState extends State<HomeScreen> {
             allowedSwipeDirection:
                 const AllowedSwipeDirection.only(left: true, right: true),
             onSwipe: (previousIndex, currentIndex, direction) {
-              if (direction == CardSwiperDirection.right) {
-                print('like');
-              } else if (direction == CardSwiperDirection.left) {
-                print('dislike');
+              if (direction == CardSwiperDirection.left) {
+                imageProvider.dislikeImage(
+                    imageProvider.imageUrls[currentIndex!].imageUrl);
+              } else if (direction == CardSwiperDirection.right) {
+                imageProvider
+                    .likeImage(imageProvider.imageUrls[currentIndex!].imageUrl);
               }
               return true;
             },
             onEnd: () {
-              print('All images have been swiped');
-              imageProvider.loadNextPage();
+              if (!imageProvider.isLoading) {
+                imageProvider.loadNextPage();
+              }
+              // Navigate to ResultScreen when all images are swiped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ResultScreen()),
+              );
             },
           );
         },
