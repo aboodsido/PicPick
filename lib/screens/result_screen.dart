@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/image_provider.dart';
+import '../widgets/result_card_widget.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
@@ -30,7 +31,7 @@ class ResultScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Likes
-            _buildResultCard(
+            buildResultCard(
               context: context,
               label: 'Likes',
               count: imageProvider.likes,
@@ -39,7 +40,7 @@ class ResultScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Dislikes
-            _buildResultCard(
+            buildResultCard(
               context: context,
               label: 'Dislikes',
               count: imageProvider.dislikes,
@@ -47,16 +48,16 @@ class ResultScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Optional: A button to go back to the home screen and swipe again
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Go back to the HomeScreen
+                Navigator.pop(context);
               },
               child: const Text('Go Back and Swipe Again'),
             ),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                imageProvider.reset(); // Go back to the HomeScreen
+                imageProvider.reset();
               },
               child: const Text('Reset The counts'),
             ),
@@ -67,39 +68,4 @@ class ResultScreen extends StatelessWidget {
   }
 
   // Helper method to build result card
-  Widget _buildResultCard({
-    required BuildContext context,
-    required String label,
-    required int count,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color, width: 2),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            '$label: ',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            '$count',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-        ],
-      ),
-    );
-  }
 }

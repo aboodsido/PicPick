@@ -26,21 +26,21 @@ class ImageProviderClass extends ChangeNotifier {
   Future<void> fetchImages({int page = 1}) async {
     try {
       _isLoading = true;
-      notifyListeners(); // Notify listeners before fetching
+      notifyListeners(); 
 
       final newImages = await _imageService.fetchImages(page: page);
 
       if (page == 1) {
-        _imageUrls = newImages; // Reset the list for the first page
+        _imageUrls = newImages.take(10).toList();
       } else {
-        _imageUrls.addAll(newImages); // Append images for subsequent pages
+        _imageUrls = newImages.take(10).toList();
       }
 
       _isLoading = false;
-      notifyListeners(); // Notify listeners after data is fetched
+      notifyListeners();
     } catch (e) {
       _isLoading = false;
-      notifyListeners(); // Notify listeners in case of an error
+      notifyListeners();
       print('Error fetching images: $e');
     }
   }
@@ -66,16 +66,16 @@ class ImageProviderClass extends ChangeNotifier {
   // Load the next page of images (for pagination)
   void loadNextPage() {
     _currentPage++;
-    fetchImages(page: _currentPage); // Fetch images for the next page
+    fetchImages(page: _currentPage);
+    notifyListeners();
   }
 
-   void reset() {
+  void reset() {
     _imageUrls = [];
     _likes = 0;
     _dislikes = 0;
     _likedImages.clear();
     _dislikedImages.clear();
-    _currentPage = 1;
-    fetchImages(page: 1);
+    fetchImages();
   }
 }
